@@ -56,6 +56,20 @@ toDoer is a task app manager API.
 | /api/todo/update/:todoId | PUT | Update a specific task |
 | /api/todo/changestate/:todoId | PUT | Change the state of a specific task |
 
+## Environment Variables
+
+In order to use MongoDB with the toDoer Backend, you need to set up a MongoDB database and obtain the necessary URL key. You can check the file named `.env example` at the root of the project which provides a layout for the environment variables that need to be added.
+
+The `.env example` file should look like this:
+
+```
+PORT=PORT
+MONGODB_URL=YOUR_DATA_BASE_CONNECTION_PASSWORD
+NODE_ENV="development"
+```
+
+Make sure to replace the fields with the actual URL key and the port you will use. You can then rename the file to `.env` and add it to your `.gitignore` file so that it is not included in version control.
+
 ## Contributing
 
 1. Fork the project.
