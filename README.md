@@ -22,6 +22,7 @@ toDoer is a task app manager API.
 - dotenv
 - helmet
 - nodemon
+- mongoDB
 
 ## Installation
 
@@ -31,8 +32,9 @@ toDoer is a task app manager API.
 ## Usage
 
 1. Start the server: `npm start`
-3. Find the .env example file and create your own .env following the indications.
-2. Access the API at `http://localhost:your-chosen-port/api-endpoints`
+2. Find the .env example file and create your own .env with your own variables
+3. Connect to MongoDB
+4. Access the API at `http://localhost:your-chosen-port/api-endpoints`
 
 ## API Endpoints
 
