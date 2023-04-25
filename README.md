@@ -63,12 +63,12 @@ In order to use MongoDB with the toDoer Backend, you need to set up a MongoDB da
 The `.env example` file should look like this:
 
 ```
-PORT=PORT
-MONGODB_URL=YOUR_DATA_BASE_CONNECTION_PASSWORD
+PORT=4001
+MONGODB_URL=YOUR_MONGODB_CONNECTION_URL
 NODE_ENV="development"
 ```
 
-Make sure to replace the fields with the actual URL key and the port you will use. You can then rename the file to `.env` and add it to your `.gitignore` file so that it is not included in version control.
+Make sure to replace the fields with the actual URL connection to MongoDB. You can then rename the file to `.env` and add it to your `.gitignore` file so that it is not included in version control.
 
 ## Contributing
 
