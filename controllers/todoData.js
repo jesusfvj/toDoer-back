@@ -1,5 +1,4 @@
 const Todo = require("../models/Todo");
-const User = require("../models/User");
 
 const registerTodo = async (req, res) => {
   const {

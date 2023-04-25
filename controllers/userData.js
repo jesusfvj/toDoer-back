@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const generateJWT = require("../helpers/generateJWT");
 
 const registerUser = async (req, res) => {
   const {
@@ -42,6 +43,7 @@ const registerUser = async (req, res) => {
     });
 
     await newUser.save();
+    const token = await generateJWT(newUser._id);
 
     return res.status(200).json({
       ok: true,
@@ -49,7 +51,8 @@ const registerUser = async (req, res) => {
         name: newUser.name,
         lastName: newUser.lastName,
         email: newUser.email,
-        _id: newUser._id
+        _id: newUser._id,
+        token
       },
     });
   } catch (error) {
@@ -85,12 +88,14 @@ const logInUser = async (req, res) => {
         ok: false,
         msg: "Email and password don't match."
       })
-    } else {
-      return res.status(200).json({
-        ok: true,
-        user: userFromDb
-      });
     }
+
+    const token = await generateJWT(userFromDb._id);
+
+    return res.status(200).json({
+      ok: true,
+      user: {...userFromDb, token}
+    });
 
   } catch (error) {
     return res.status(503).json({
