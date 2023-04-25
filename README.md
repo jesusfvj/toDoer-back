@@ -22,6 +22,7 @@ toDoer is a task app manager API.
 - dotenv
 - helmet
 - nodemon
+- mongoDB
 
 ## Installation
 
@@ -31,8 +32,9 @@ toDoer is a task app manager API.
 ## Usage
 
 1. Start the server: `npm start`
-3. Find the .env example file and create your own .env following the indications.
-2. Access the API at `http://localhost:your-chosen-port/api-endpoints`
+2. Find the .env example file and create your own .env with your own variables
+3. Connect to MongoDB
+4. Access the API at `http://localhost:your-chosen-port/api-endpoints`
 
 ## API Endpoints
 
@@ -53,6 +55,20 @@ toDoer is a task app manager API.
 | /api/todo/delete/:todoId | DELETE | Delete a specific task |
 | /api/todo/update/:todoId | PUT | Update a specific task |
 | /api/todo/changestate/:todoId | PUT | Change the state of a specific task |
+
+## Environment Variables
+
+In order to use MongoDB with the toDoer Backend, you need to set up a MongoDB database and obtain the necessary URL key. You can check the file named `.env example` at the root of the project which provides a layout for the environment variables that need to be added.
+
+The `.env example` file should look like this:
+
+```
+PORT=4001
+MONGODB_URL=YOUR_MONGODB_CONNECTION_URL
+NODE_ENV="development"
+```
+
+Make sure to replace the fields with the actual URL connection to MongoDB. You can then rename the file to `.env` and add it to your `.gitignore` file so that it is not included in version control.
 
 ## Contributing
 
