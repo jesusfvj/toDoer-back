@@ -34,7 +34,7 @@ toDoer is a task app manager API.
 1. Start the server: `npm start`
 2. Find the .env example file and create your own .env with your own variables
 3. Connect to MongoDB
-4. Access the API at `http://localhost:your-chosen-port/api-endpoints`
+4. Access the API at `http://localhost:4001/api-endpoints`
 
 ## API Endpoints
 
@@ -66,9 +66,10 @@ The `.env example` file should look like this:
 PORT=4001
 MONGODB_URL=YOUR_MONGODB_CONNECTION_URL
 NODE_ENV="development"
+TOKEN_SECRET="STRING_OF_YOUR_CHOICE"
 ```
 
-Make sure to replace the fields with the actual URL connection to MongoDB. You can then rename the file to `.env` and add it to your `.gitignore` file so that it is not included in version control.
+Make sure to replace MONGODB_URL with the actual URL connection to MongoDB and TOKEN_SECRET with a string of your choice. You can then rename the file to `.env` and add it to your `.gitignore` file so that it is not included in version control.
 
 ## Contributing
 
