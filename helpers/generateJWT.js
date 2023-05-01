@@ -9,7 +9,7 @@ const generateJWT = (id = "") => {
       payload,
       process.env.TOKEN_SECRET,
       {
-        expiresIn: "4h",
+        expiresIn: "30m",
       },
       (err, token) => {
         if (err) {

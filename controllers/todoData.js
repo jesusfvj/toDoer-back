@@ -1,4 +1,7 @@
 const Todo = require("../models/Todo");
+const {
+  toPascalCase,
+} = require("../utils/stringTreatment");
 
 const registerTodo = async (req, res) => {
   const {
@@ -38,21 +41,30 @@ const registerTodo = async (req, res) => {
 const getTodos = async (req, res) => {
   try {
     const userId = req.params.userId;
+    const stateColumns = req.body.stateColumns;
+    const todos = await Todo.find({
+      createdBy: userId
+    }).populate('createdBy');
 
-    const todos = await Todo.find({ createdBy: userId }).populate('createdBy');
+    const todosFiltered = stateColumns.map((stateColumn) => {
+       return todos.filter(todo => todo.state === stateColumn);
+    })
 
-    const todosPending = todos.filter(todo => todo.state === "pending");
-    const todosInProgress = todos.filter(todo => todo.state === "inProgress");
-    const todosFinished = todos.filter(todo => todo.state === "finished");
+    const todosFilteredByState = todosFiltered.reduce((acc, curr) => {
+      curr.forEach(item => {
+        const stateKey = `todos${toPascalCase(item.state)}`;
+        if (!acc[stateKey]) {
+          acc[stateKey] = [];
+        }
+        acc[stateKey].push(item);
+      });
+      return acc;
+    }, {});
 
     return res.status(200).json({
       ok: true,
-      todos:{
-        todosPending,
-        todosInProgress,
-        todosFinished
-      }
-      })
+      todosFilteredByState
+    })
 
   } catch (error) {
     return res.status(503).json({
@@ -61,7 +73,6 @@ const getTodos = async (req, res) => {
     });
   }
 }
-
 
 const deleteTodo = async (req, res) => {
   try {
@@ -81,7 +92,7 @@ const deleteTodo = async (req, res) => {
     return res.status(200).json({
       ok: true,
       deletedTodo: findTodoDb
-      })
+    })
 
   } catch (error) {
     return res.status(503).json({
@@ -94,7 +105,9 @@ const deleteTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
   try {
     const todoId = req.params.todoId;
-    const { newContent } = req.body.todoEditContent;
+    const {
+      newContent
+    } = req.body.todoEditContent;
 
     const findTodoDb = await Todo.findOne({
       _id: todoId
@@ -107,17 +120,21 @@ const updateTodo = async (req, res) => {
       });
     }
 
-    const updateTodoDb = await Todo.findOneAndUpdate(
-      {_id: todoId},
-      { $set: { content: newContent }},
-      { returnOriginal: false }
-      );
+    const updateTodoDb = await Todo.findOneAndUpdate({
+      _id: todoId
+    }, {
+      $set: {
+        content: newContent
+      }
+    }, {
+      returnOriginal: false
+    });
 
     return res.status(200).json({
       ok: true,
       originalTodo: findTodoDb,
       updatedTodo: updateTodoDb
-      })
+    })
 
   } catch (error) {
     return res.status(503).json({
@@ -135,33 +152,33 @@ const changeStateTodo = async (req, res) => {
     const directionOfChange = req.body.directionOfChange;
     let newState = "";
 
-    if(directionOfChange === "right"){
-    switch (originalState) {
-      case "pending":
-        newState = "inProgress";
-        break;
-    
-      case "inProgress":
-        newState = "finished";
-        break;
-    
-      default:
-        break;
+    if (directionOfChange === "right") {
+      switch (originalState) {
+        case "pending":
+          newState = "inProgress";
+          break;
+
+        case "inProgress":
+          newState = "finished";
+          break;
+
+        default:
+          break;
+      }
+    } else if (directionOfChange === "left") {
+      switch (originalState) {
+        case "inProgress":
+          newState = "pending";
+          break;
+
+        case "finished":
+          newState = "inProgress";
+          break;
+
+        default:
+          break;
+      }
     }
-  } else if (directionOfChange === "left"){
-    switch (originalState) {
-      case "inProgress":
-        newState = "pending";
-        break;
-    
-      case "finished":
-        newState = "inProgress";
-        break;
-    
-      default:
-        break;
-    }
-  }
     const findTodoDb = await Todo.findOne({
       _id: todoId
     });
@@ -173,17 +190,23 @@ const changeStateTodo = async (req, res) => {
       });
     }
 
-    const updateTodoDb = await Todo.findOneAndUpdate(
-      {_id: todoId},
-      { $set: { state: newState }},
-      { returnOriginal: false }
-      );
+    const updateTodoDb = await Todo.findOneAndUpdate({
+      _id: todoId
+    }, {
+      $set: {
+        state: newState
+      }
+    }, {
+      returnOriginal: false
+    });
 
-      const todos = await Todo.find({ createdBy: userId }).populate('createdBy');
+    const todos = await Todo.find({
+      createdBy: userId
+    }).populate('createdBy');
 
-      const todosPending = todos.filter(todo => todo.state === "pending");
-      const todosInProgress = todos.filter(todo => todo.state === "inProgress");
-      const todosFinished = todos.filter(todo => todo.state === "finished");
+    const todosPending = todos.filter(todo => todo.state === "pending");
+    const todosInProgress = todos.filter(todo => todo.state === "inProgress");
+    const todosFinished = todos.filter(todo => todo.state === "finished");
 
     return res.status(200).json({
       ok: true,
@@ -192,7 +215,7 @@ const changeStateTodo = async (req, res) => {
       todosPending,
       todosInProgress,
       todosFinished
-      })
+    })
 
   } catch (error) {
     return res.status(503).json({
