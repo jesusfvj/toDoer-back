@@ -119,9 +119,7 @@ const deleteTodoColumn = async (req, res) => {
 const updateTodoColumn = async (req, res) => {
   try {
     const todoColumnId = req.params.todoColumnId;
-    const {
-      newTitleColumn
-    } = req.body.newTitleColumn;
+    const newTitleColumn = req.body.newTitleColumn;
 
     const findTodoColumnDb = await TodoColumn.findOne({
       _id: todoColumnId
