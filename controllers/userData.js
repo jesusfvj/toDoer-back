@@ -32,7 +32,7 @@ const registerUser = async (req, res) => {
     }
 
     const salt = bcrypt.genSaltSync(10);
-    hashedPassword = bcrypt.hashSync(password, salt);
+    const hashedPassword = bcrypt.hashSync(password, salt);
 
     const newUser = new User({
       name,
